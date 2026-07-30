@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: project
+
+  docker:
+    compose:
+      enabled: false
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/uniconnect
+    username: postgres
+    password: dalijaz
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: backend-office-rates-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.example.project.core.dto.OfficeRateMessage
+      auto-offset-reset: earliest
+
+jwt:
+  secret: "dIPwtq2kZJHX/yQNCt6UmjJBD9RU5ZlSL+WCe3i8vgoqunD3rqe8UN9wYKrlN4AKbcShx0Q7RpCJgDJkO0VsWg=="
+  expiration: 86400000
