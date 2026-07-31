@@ -6,11 +6,10 @@ spring:
     compose:
       enabled: false
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/uniconnect
-    username: postgres
-    password: dalijaz
-
+datasource:
+  url: ${SPRING_DATASOURCE_URL}
+  username: ${SPRING_DATASOURCE_USERNAME}
+  password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
