@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,8 +42,27 @@ public class ExchangeOfficeService {
                 .name(dto.getName())
                 .city(dto.getCity())
                 .country(dto.getCountry())
+                .code(generateUniqueCode(dto.getName()))
                 .build();
         return toDTO(officeRepository.save(office));
+    }
+
+    // 👇 AJOUT : génère un code unique à partir du nom du bureau
+    private String generateUniqueCode(String name) {
+        String base = (name == null ? "OFFICE" : name)
+                .toUpperCase()
+                .replaceAll("[^A-Z0-9]", "");
+        if (base.isBlank()) {
+            base = "OFFICE";
+        }
+
+        String code;
+        do {
+            String suffix = UUID.randomUUID().toString().substring(0, 5).toUpperCase();
+            code = base + "-" + suffix;
+        } while (officeRepository.existsByCode(code));
+
+        return code;
     }
 
     public RateDTO addRate(Long officeId, CreateRateRequest request) {
@@ -141,6 +161,7 @@ public class ExchangeOfficeService {
                 })
                 .collect(Collectors.toList());
     }
+
     public ExchangeOfficeDTO updateOffice(Long id, ExchangeOfficeDTO dto) {
         ExchangeOffice office = officeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Bureau introuvable"));
