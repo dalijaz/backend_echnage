@@ -23,9 +23,11 @@ spring:
     bootstrap-servers: kafka-af8fdb5-eniso-2f43.b.aivencloud.com:21638
     consumer:
       group-id: backend-office-rates-group
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
         spring.json.trusted.packages: "*"
         spring.json.use.type.headers: false
         spring.json.value.default.type: com.example.project.core.dto.OfficeRateMessage
@@ -36,7 +38,6 @@ spring:
       sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="avnadmin" password="${KAFKA_PASSWORD}";
       ssl.truststore.location: /app/kafka/aiven-truststore.jks
       ssl.truststore.password: ${KAFKA_TRUSTSTORE_PASSWORD:changeit}
-
 jwt:
   secret: ${JWT_SECRET}
   expiration: 86400000
