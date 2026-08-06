@@ -19,7 +19,7 @@ datasource:
     show-sql: true
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka-af8fdb5-eniso-2f43.b.aivencloud.com:21638
     consumer:
       group-id: backend-office-rates-group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -29,6 +29,12 @@ datasource:
         spring.json.use.type.headers: false
         spring.json.value.default.type: com.example.project.core.dto.OfficeRateMessage
       auto-offset-reset: earliest
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: SCRAM-SHA-256
+      sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="avnadmin" password="${KAFKA_PASSWORD}";
+      ssl.truststore.location: classpath:kafka/aiven-truststore.jks
+      ssl.truststore.password: changeit
 
 jwt:
   secret: "dIPwtq2kZJHX/yQNCt6UmjJBD9RU5ZlSL+WCe3i8vgoqunD3rqe8UN9wYKrlN4AKbcShx0Q7RpCJgDJkO0VsWg=="
