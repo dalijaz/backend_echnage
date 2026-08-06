@@ -6,10 +6,11 @@ spring:
     compose:
       enabled: false
 
-datasource:
-  url: ${SPRING_DATASOURCE_URL}
-  username: ${SPRING_DATASOURCE_USERNAME}
-  password: ${SPRING_DATASOURCE_PASSWORD}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -34,8 +35,8 @@ datasource:
       sasl.mechanism: SCRAM-SHA-256
       sasl.jaas.config: org.apache.kafka.common.security.scram.ScramLoginModule required username="avnadmin" password="${KAFKA_PASSWORD}";
       ssl.truststore.location: classpath:kafka/aiven-truststore.jks
-      ssl.truststore.password: changeit
+      ssl.truststore.password: ${KAFKA_TRUSTSTORE_PASSWORD:changeit}
 
 jwt:
-  secret: "dIPwtq2kZJHX/yQNCt6UmjJBD9RU5ZlSL+WCe3i8vgoqunD3rqe8UN9wYKrlN4AKbcShx0Q7RpCJgDJkO0VsWg=="
+  secret: ${JWT_SECRET}
   expiration: 86400000
